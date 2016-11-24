@@ -9,6 +9,8 @@
 #  2.1.1.0 で custom role path使ってると死亡 の回避
 #  2.1.1.0 以上は以下の処理をする、それ以下はしない
 #   実は >= "2.1.1.0" で判定可能だった(2.1.1.0 でテスト済)
+#
+# TODO: Change to best practices (http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices-for-variables-and-vaults)
 - block:
   - name: Ansible version check
     command: ansible --version
