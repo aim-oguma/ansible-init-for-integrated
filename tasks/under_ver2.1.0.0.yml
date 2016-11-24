@@ -1,23 +1,23 @@
 ---
 
 - local_action: stat path="group_vars/{{ item }}-secret"
-  register: result_file_secret
+  register: init_for_integration_secret_file
   with_items:
       - "{{ group_names }}"
 
-- set_fact: result_file_secret="{{ item.stat.exists }}"
-  with_items: "{{ result_file_secret.results }}"
+- set_fact: init_for_integration_secret_file="{{ item.stat.exists }}"
+  with_items: "{{ init_for_integration_secret_file.results }}"
 
 - include_vars: "../group_vars/{{ item }}-secret"
   with_items:
     - "{{ group_names }}"
-  when: result_file_secret
+  when: init_for_integration_secret_file
 
 - local_action: stat path='group_vars/{{ pjcode }}-secret' get_md5=true follow=false
-  register: result_file
+  register: init_for_integration_secret_file
 
 - include_vars: "../group_vars/{{ pjcode }}-secret"
-  when: result_file.stat.exists
+  when: init_for_integration_secret_file.stat.exists
 
 - include_vars: "../host_vars/{{ inventory_hostname }}-secret"
   check_mode: no
