@@ -1,0 +1,23 @@
+---
+
+- local_action: stat path="group_vars/{{ item }}-secret"
+  register: result_file_secret
+  with_items:
+      - "{{ group_names }}"
+
+- set_fact: result_file_secret="{{ item.stat.exists }}"
+  with_items: "{{ result_file_secret.results }}"
+
+- include_vars: "../group_vars/{{ item }}-secret"
+  with_items:
+    - "{{ group_names }}"
+  when: result_file_secret
+
+- local_action: stat path='group_vars/{{ pjcode }}-secret' get_md5=true follow=false
+  register: result_file
+
+- include_vars: "../group_vars/{{ pjcode }}-secret"
+  when: result_file.stat.exists
+
+- include_vars: "../host_vars/{{ inventory_hostname }}-secret"
+  check_mode: no
