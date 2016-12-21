@@ -5,7 +5,7 @@
 # * About {group,host}_vars/**-secret.yml files.
 #   * These files encrypted that at Ansible-vault.
 #
-# Workaround (https://github.com/aiming/infra-ext/pull/339)
+# Workaround:
 #  2.1.1.0 で custom role path使ってると死亡 の回避
 #  2.1.1.0 以上は以下の処理をする、それ以下はしない
 #   実は >= "2.1.1.0" で判定可能だった(2.1.1.0 でテスト済)
@@ -17,7 +17,7 @@
     register: ansible_version
     delegate_to: 127.0.0.1
     changed_when: False
-  - name: Workaround of https://github.com/aiming/infra-ext/pull/339 for group_vars
+  - name: Read group_vars and host_vars. In addition, add the secret files.
     include_vars: ../{{ item.group_or_host }}_vars/{{ item.type }}.yml
     with_items:
       - { group_or_host: 'group', type: 'all' }
