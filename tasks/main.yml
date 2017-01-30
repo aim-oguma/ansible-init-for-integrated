@@ -11,12 +11,13 @@
 #   実は >= "2.1.1.0" で判定可能だった(2.1.1.0 でテスト済)
 #
 # TODO: Change to best practices (http://docs.ansible.com/ansible/playbooks_best_practices.html#best-practices-for-variables-and-vaults)
+- name: Ansible version check
+  command: ansible --version
+  register: ansible_version
+  delegate_to: 127.0.0.1
+  changed_when: False
+
 - block:
-  - name: Ansible version check
-    command: ansible --version
-    register: ansible_version
-    delegate_to: 127.0.0.1
-    changed_when: False
   - name: Read group_vars and host_vars. In addition, add the secret files.
     include_vars: ../{{ item.group_or_host }}_vars/{{ item.type }}.yml
     with_items:
